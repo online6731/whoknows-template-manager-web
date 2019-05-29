@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TemplateService } from '../_services/template.service';
-import { Template } from '@angular/compiler/src/render3/r3_ast';
+import { Template } from '../_models/Template';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-main',
@@ -9,7 +11,8 @@ import { Template } from '@angular/compiler/src/render3/r3_ast';
 })
 export class MainComponent implements OnInit {
 
-  templates : Template[];
+  templates       : Template[];
+  workingTemplate : Template;
 
   constructor(
     private templateService : TemplateService
@@ -19,7 +22,9 @@ export class MainComponent implements OnInit {
     this.templateService.templateFind().subscribe((body) => {
       if (body.ok){
         
-        this.templates = body.templates;
+        this.templates        = body.templates;
+        this.workingTemplate  = body.templates[0];
+        
 
       } else {
         console.log(body);

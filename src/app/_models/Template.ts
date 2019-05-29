@@ -1,6 +1,9 @@
 import { Tag } from './Tag';
 
 export class Template {
+    _id                     : {
+        $oid                : String
+    }
     values				    : {}
     idea                    : String[]
     __choose				: {
@@ -115,12 +118,8 @@ export class Template {
     score_function			: {
         type				: String,
     }
-    time_function			: {
-        type				: String,
-    }
-    state					: {
-        type				: String
-    }
-    state_info				: String
-    datasets				: String[]
+    time_function			: {}
+    __state					: {}
+    __state_info			: String
+    __datasets				: String[]
 }   
