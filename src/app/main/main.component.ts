@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TemplateService } from '../_services/template.service';
+import { Template } from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
   selector: 'app-main',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  templates : Template[];
+
+  constructor(
+    private templateService : TemplateService
+  ) { }
 
   ngOnInit() {
+    this.templateService.templateFind().subscribe((body) => {
+      if (body.ok){
+        
+        this.templates = body.templates;
+
+      } else {
+        console.log(body);
+      }
+    })
   }
 
 }
