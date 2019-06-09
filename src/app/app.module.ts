@@ -6,6 +6,7 @@ import { MainComponent } from './main/main.component';
 import { RouterModule , Routes , ActivatedRouteSnapshot} from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 const appRoutes: Routes = [
@@ -21,7 +22,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true } /* <-- debugging purposes only */ ),
     MatButtonModule,
-    MatTabsModule
+    MatTabsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
