@@ -1,26 +1,224 @@
 <div class="container-fluid">
-  <div class="row">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
+    <div class="row">
+        <div class="col-md-3">
 
-          <button mat-raised-button color="primary" *ngFor="let template of templates">
-            {{ template._id.$oid }}
-          </button>
+            <input class="w-100" placeholder="Search">
 
-        </ul>
-      </div>
-    </nav>
+            <div class="w-100" *ngFor="let template of templates" style="list-style: none">
 
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-      
-      <mat-tab-group>
-        <mat-tab label="bool"> bool </mat-tab>
-        <mat-tab label="choose"> choose </mat-tab>
-        <mat-tab label="write"> write </mat-tab>
-        <mat-tab label="select"> select </mat-tab>
-      </mat-tab-group>
+                <div class="w-100">
+                    <button class="template-item btn w-100" (click)="showTemplate(template)">
+                        <span class="float-left" style="background-color: transparent">
+                            {{ template._id.$oid }}
+                        </span>
+                        <span class="float-right">
+                            {{ template.__state }}
+                        </span>
+                    </button>
+                </div>
 
-    </main>
-  </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="input-group w-75">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Tags</label>
+                            </div>
+                            <input type="text" class="form-control" [value]="workingTemplate.tags">
+                        </div>
+
+                        <div class="input-group w-75">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Datasets</label>
+                            </div>
+                            <input type="text" class="form-control" [value]="workingTemplate.datasets">
+                        </div>
+
+                    </div>
+
+                    <div class="row overflow-auto">
+
+                        <div class="input-group w-100" *ngFor="let item of workingTemplate.values | keyvalue">
+                            <div class="input-group-prepend">
+                                <input type="text" class="form-control" placeholder="key" [value]="item.key">
+                            </div>
+                            <input type="text" class="form-control" placeholder="query" [value]="item.value">
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <ul class="nav nav-pills mb-3 w-100" id="pills-tab" role="tablist">
+                            <li class="nav-item w-25 text-center">
+                                <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
+                                    aria-controls="pills-home" aria-selected="true">bool</a>
+                            </li>
+                            <li class="nav-item w-25 text-center">
+                                <a class="nav-link active" id="pills-profile-tab" data-toggle="pill"
+                                    href="#pills-profile" role="tab" aria-controls="pills-profile"
+                                    aria-selected="false">choose</a>
+                            </li>
+                            <li class="nav-item w-25 text-center">
+                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact"
+                                    role="tab" aria-controls="pills-contact" aria-selected="false">select</a>
+                            </li>
+                            <li class="nav-item w-25 text-center">
+                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact"
+                                    role="tab" aria-controls="pills-contact" aria-selected="false">write</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content w-100" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                                aria-labelledby="pills-home-tab">
+
+                                <div class="input-group w-100">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">idea</label>
+                                    </div>
+                                    <input type="text" class="form-control" [value]="workingTemplate['__idea']">
+                                </div>
+
+                                <div class="input-group w-100">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">title</label>
+                                    </div>
+                                    <input type="text" class="form-control"
+                                        [value]="workingTemplate['&choose']['title']['text'][0]" style="direction: rtl;">
+                                </div>
+
+                                <div class="input-group w-100">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">subtitle</label>
+                                    </div>
+                                    <input type="text" class="form-control"
+                                        [value]="workingTemplate['&choose']['subtitle']['text'][0]">
+                                </div>
+
+                                <div class="input-group w-100">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">choice</label>
+                                    </div>
+                                    <input type="text" class="form-control"
+                                        [value]="workingTemplate['&choose']['choice']['text'][0]">
+                                </div>
+
+                                <div class="input-group w-100">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">answer</label>
+                                    </div>
+                                    <input type="text" class="form-control"
+                                        [value]="workingTemplate['&choose']['answer']['text'][0]">
+                                </div>
+
+                            </div>
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel"
+                                aria-labelledby="pills-profile-tab">
+
+
+                                <div class="input-group w-100">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">idea</label>
+                                    </div>
+                                    <input type="text" class="form-control" [value]="workingTemplate['__idea']">
+                                </div>
+
+                                <div class="input-group w-100">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">title</label>
+                                    </div>
+                                    <input type="text" class="form-control"
+                                        [value]="workingTemplate['&title']['&text'][0]" style="direction: rtl;">
+                                </div>
+
+                                <div class="input-group w-100">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">subtitle</label>
+                                    </div>
+                                    <input type="text" class="form-control"
+                                        [value]="workingTemplate['&title']['&text'][0]">
+                                </div>
+
+
+                            </div>
+                            <div class="tab-pane fade" id="pills-contact" role="tabpanel"
+                                aria-labelledby="pills-contact-tab">
+
+
+                                <div class="input-group w-100">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="inputGroupSelect01">idea</label>
+                                        </div>
+                                        <input type="text" class="form-control" [value]="workingTemplate['__idea']">
+                                    </div>
+    
+                                    <div class="input-group w-100">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="inputGroupSelect01">title</label>
+                                        </div>
+                                        <input type="text" class="form-control"
+                                            [value]="workingTemplate['&title']['&text'][0]" style="direction: rtl;">
+                                    </div>
+    
+                                    <div class="input-group w-100">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="inputGroupSelect01">subtitle</label>
+                                        </div>
+                                        <input type="text" class="form-control"
+                                            [value]="workingTemplate['&title']['&text'][0]">
+                                    </div>
+    
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row" style="height: 75px; ">
+                                <button class="col-md-1">
+                                    RUN
+                                </button>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            idea
+                                        </div>
+                                        <div class="col-md-2">
+                                            writing
+                                        </div>
+                                        <div class="col-md-2">
+                                            repair
+                                        </div>
+                                        <div class="col-md-2">
+                                            ready
+                                        </div>
+                                        <div class="col-md-2">
+                                            verified
+                                        </div>
+                                        <div class="col-md-2">
+                                            in_use
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

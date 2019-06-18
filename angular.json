@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "te": {
+    "whoknows-template-manager-ui": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/te",
+            "outputPath": "dist/whoknows-template-manager-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -58,18 +58,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "te:build"
+            "browserTarget": "whoknows-template-manager-ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "te:build:production"
+              "browserTarget": "whoknows-template-manager-ui:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "te:build"
+            "browserTarget": "whoknows-template-manager-ui:build"
           }
         },
         "test": {
@@ -106,16 +106,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "te:serve"
+            "devServerTarget": "whoknows-template-manager-ui:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "te:serve:production"
+              "devServerTarget": "whoknows-template-manager-ui:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "te"
+  "defaultProject": "whoknows-template-manager-ui"
 }

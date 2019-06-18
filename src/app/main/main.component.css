@@ -1,0 +1,6 @@
+.template-item{
+    color: black;
+}
+.template-item:hover{
+    color: darkgrey;
+}

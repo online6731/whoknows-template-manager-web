@@ -1,5 +1,7 @@
+import { ObjectId } from './ObjectId';
+
 export class Tag {
-    _id             : String
+    _id             : ObjectId
     title           : String
     persianTitle    : String
 }
