@@ -1,224 +1,131 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
+  <div class="row bg-secondary overflow-hidden" style="height: 100vh;">
+    <div class="col-md-3 h-100 overflow-auto">
+      <input matInput class="w-75" placeholder="Search" [(ngModel)]="searchQuery" />
 
-            <input class="w-100" placeholder="Search">
+      <button mat-button class="w-25" (click)="newTemplate()">new</button>
 
-            <div class="w-100" *ngFor="let template of templates" style="list-style: none">
+      <div class="w-100" *ngFor="let template of templates | filterTemplate: searchQuery" style="list-style: none">
+        <div class="w-100">
+          <button mat-button class="w-100" (click)="showTemplate(template)">
+            <span class="float-left" style="background-color: transparent">
+              {{ template._id.$oid }}
+            </span>
+            <span class="float-right">
+              {{ template.__state }}
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
 
-                <div class="w-100">
-                    <button class="template-item btn w-100" (click)="showTemplate(template)">
-                        <span class="float-left" style="background-color: transparent">
-                            {{ template._id.$oid }}
-                        </span>
-                        <span class="float-right">
-                            {{ template.__state }}
-                        </span>
-                    </button>
-                </div>
+    <div class="col-md-9 h-100 " style="overflow-x: hidden; overflow-y: scroll">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="input-group w-100" *ngFor="let metadata of ['__idea', 'datasets']">
+              <mat-form-field style="width: 15%; text-align: center;">
+                <input matInput [(ngModel)]="metadata" [disabled]="true" />
+              </mat-form-field>
+              <mat-form-field style="width: 85%; text-align: left;">
+                <input matInput [(ngModel)]="workingTemplate[metadata]" />
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row w-100">
+            <div class="input-group w-100" *ngFor="let item of workingTemplate.values | keyvalue">
+              <mat-form-field style="width: 15%; text-align: center;">
+                <input matInput [(ngModel)]="item.key" />
+              </mat-form-field>
+
+              <mat-form-field style="width: 80%">
+                <input matInput [(ngModel)]="item.value" />
+              </mat-form-field>
+
+              <div style="width: 5%">
+                <button mat-button (click)="removeValue(item.key)"> remove </button>
+              </div>
+            </div>
+
+            <div class="row w-100">
+              <mat-form-field style="width: 15%; text-align: center;">
+                <input matInput placeholder="new key" [(ngModel)]="newValueKey" />
+              </mat-form-field>
+
+              <mat-form-field style="width: 80%">
+                <input matInput placeholder="new query" [(ngModel)]="newValueQuery" />
+              </mat-form-field>
+
+              <div style="width: 5%">
+                <button mat-button (click)="addValue(newValueKey, newValueQuery); newValueKey=''; newValueQuery='';">
+                  add </button>
+              </div>
+            </div>
+
+            <div class="row w-100">
+
+              <div class="w-100" *ngFor="let field of allFields">
+                <mat-form-field style="width: 15%; text-align: center;">
+                  <input matInput [(ngModel)]="field" [disabled]="true" />
+                </mat-form-field>
+
+                <mat-form-field style="width: 60%;">
+                  <input matInput [(ngModel)]="workingTemplate[currentType][currentFormat][currentIndex]" />
+                </mat-form-field>
+
+                <mat-form-field style="width: 3%; ">
+                  <input matInput type="number" [(ngModel)]="currentIndex" />
+                </mat-form-field>
+
+                <mat-form-field style="width: 8%; ">
+                  <mat-label>Format</mat-label>
+                  <mat-select [(value)]="currentFormat">
+                    <mat-option *ngFor="let format of allFormats" value="format">{{format}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field style="width: 8%; ">
+                  <mat-label>Type</mat-label>
+                  <mat-select [(value)]="currentType">
+                    <mat-option *ngFor="let type of allTypes" value="type">{{type}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
 
             </div>
-        </div>
-
-        <div class="col-md-9">
 
             <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="input-group w-75">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Tags</label>
-                            </div>
-                            <input type="text" class="form-control" [value]="workingTemplate.tags">
-                        </div>
-
-                        <div class="input-group w-75">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Datasets</label>
-                            </div>
-                            <input type="text" class="form-control" [value]="workingTemplate.datasets">
-                        </div>
-
-                    </div>
-
-                    <div class="row overflow-auto">
-
-                        <div class="input-group w-100" *ngFor="let item of workingTemplate.values | keyvalue">
-                            <div class="input-group-prepend">
-                                <input type="text" class="form-control" placeholder="key" [value]="item.key">
-                            </div>
-                            <input type="text" class="form-control" placeholder="query" [value]="item.value">
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-
-                        <ul class="nav nav-pills mb-3 w-100" id="pills-tab" role="tablist">
-                            <li class="nav-item w-25 text-center">
-                                <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
-                                    aria-controls="pills-home" aria-selected="true">bool</a>
-                            </li>
-                            <li class="nav-item w-25 text-center">
-                                <a class="nav-link active" id="pills-profile-tab" data-toggle="pill"
-                                    href="#pills-profile" role="tab" aria-controls="pills-profile"
-                                    aria-selected="false">choose</a>
-                            </li>
-                            <li class="nav-item w-25 text-center">
-                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact"
-                                    role="tab" aria-controls="pills-contact" aria-selected="false">select</a>
-                            </li>
-                            <li class="nav-item w-25 text-center">
-                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact"
-                                    role="tab" aria-controls="pills-contact" aria-selected="false">write</a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content w-100" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
-                                aria-labelledby="pills-home-tab">
-
-                                <div class="input-group w-100">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">idea</label>
-                                    </div>
-                                    <input type="text" class="form-control" [value]="workingTemplate['__idea']">
-                                </div>
-
-                                <div class="input-group w-100">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">title</label>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        [value]="workingTemplate['&choose']['title']['text'][0]" style="direction: rtl;">
-                                </div>
-
-                                <div class="input-group w-100">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">subtitle</label>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        [value]="workingTemplate['&choose']['subtitle']['text'][0]">
-                                </div>
-
-                                <div class="input-group w-100">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">choice</label>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        [value]="workingTemplate['&choose']['choice']['text'][0]">
-                                </div>
-
-                                <div class="input-group w-100">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">answer</label>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        [value]="workingTemplate['&choose']['answer']['text'][0]">
-                                </div>
-
-                            </div>
-                            <div class="tab-pane fade" id="pills-profile" role="tabpanel"
-                                aria-labelledby="pills-profile-tab">
-
-
-                                <div class="input-group w-100">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">idea</label>
-                                    </div>
-                                    <input type="text" class="form-control" [value]="workingTemplate['__idea']">
-                                </div>
-
-                                <div class="input-group w-100">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">title</label>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        [value]="workingTemplate['&title']['&text'][0]" style="direction: rtl;">
-                                </div>
-
-                                <div class="input-group w-100">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">subtitle</label>
-                                    </div>
-                                    <input type="text" class="form-control"
-                                        [value]="workingTemplate['&title']['&text'][0]">
-                                </div>
-
-
-                            </div>
-                            <div class="tab-pane fade" id="pills-contact" role="tabpanel"
-                                aria-labelledby="pills-contact-tab">
-
-
-                                <div class="input-group w-100">
-                                        <div class="input-group-prepend">
-                                            <label class="input-group-text" for="inputGroupSelect01">idea</label>
-                                        </div>
-                                        <input type="text" class="form-control" [value]="workingTemplate['__idea']">
-                                    </div>
-    
-                                    <div class="input-group w-100">
-                                        <div class="input-group-prepend">
-                                            <label class="input-group-text" for="inputGroupSelect01">title</label>
-                                        </div>
-                                        <input type="text" class="form-control"
-                                            [value]="workingTemplate['&title']['&text'][0]" style="direction: rtl;">
-                                    </div>
-    
-                                    <div class="input-group w-100">
-                                        <div class="input-group-prepend">
-                                            <label class="input-group-text" for="inputGroupSelect01">subtitle</label>
-                                        </div>
-                                        <input type="text" class="form-control"
-                                            [value]="workingTemplate['&title']['&text'][0]">
-                                    </div>
-    
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row" style="height: 75px; ">
-                                <button class="col-md-1">
-                                    RUN
-                                </button>
-                                <div class="col-md-9">
+              <div class="col-md-12">
+                <div class="row" style="height: 75px; ">
+                  <button mat-button class="col-md-1" (click)="testTemplate(workingTemplate)">
+                    RUN
+                  </button>
+                  <!--div class="col-md-1">
                                     <div class="row">
-                                        <div class="col-md-2">
-                                            idea
-                                        </div>
-                                        <div class="col-md-2">
-                                            writing
-                                        </div>
-                                        <div class="col-md-2">
-                                            repair
-                                        </div>
-                                        <div class="col-md-2">
-                                            ready
-                                        </div>
-                                        <div class="col-md-2">
-                                            verified
-                                        </div>
-                                        <div class="col-md-2">
-                                            in_use
-                                        </div>
+                                        <span class="badge badge-success"> {{workingTemplate.__state}} </span>
+                                        
+                                        <button type="button" class="btn btn-danger">
+                                            Problems <span class="badge badge-light"> {{workingTemplate.__test_info.problems.length}} </span>
+                                            <span class="sr-only">Problems</span>
+                                          </button>
 
                                     </div>
-
+                                    
                                 </div>
-                            </div>
-                            <div class="row">
-
-                            </div>
-
-                        </div>
-                    </div>
-
+                                <div class="col-md-8">
+                                    <div class="row" *ngFor="let problem of workingTemplate.__test_info.problems">
+                                        {{problem}}
+                                    </div>
+                                </div-->
                 </div>
+                <div class="row"></div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>

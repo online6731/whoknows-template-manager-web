@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { TemplateFindResponse } from '../_models/TemplateFindResponse';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { TemplateNewResponse } from '../_models/TemplateNewResponse';
+import { TemplateTestResponse } from '../_models/TemplateTestResponse';
+import { Template } from '../_models/Template';
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +17,9 @@ export class TemplateService {
 
     templateFind(compact: boolean = false, condition: any = {}): Observable<TemplateFindResponse> {
 
-        return this.http.post<TemplateFindResponse>(`http://198.143.179.211:3001/template/find`, { compact: compact, condition: condition });
+        return this.http.post<TemplateFindResponse>(`http://198.143.179.211:3001/template/find`, { compact, condition });
 
+        /*
         return of({
             ok: true,
             templates: [
@@ -89,7 +93,16 @@ export class TemplateService {
             problem: ''
         });
 
-
+        */
 
     }
+
+    templateNew(): Observable<TemplateNewResponse> {
+        return this.http.post<TemplateNewResponse>(`http://198.143.179.211:3001/template/new`, { idea: 'idea of template' });
+    }
+
+    templateTest(template: Template): Observable<TemplateTestResponse> {
+        return this.http.post<TemplateTestResponse>(`http://198.143.179.211:3001/template/test_save`, { template });
+    }
+
 }
